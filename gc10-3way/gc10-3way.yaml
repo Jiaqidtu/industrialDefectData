@@ -1,0 +1,16 @@
+path: /zhome/9e/5/158608/industrialDefectData/gc10-3way
+train: train/images
+val: val/images
+test: test/images
+nc: 10
+names:
+  0: punching_hole
+  1: weld_line
+  2: crescent_gap
+  3: water_spot
+  4: oil_spot
+  5: silk_spot
+  6: inclusion
+  7: rolled_pit
+  8: crease
+  9: waist_folding

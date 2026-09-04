@@ -272,13 +272,9 @@ NEU-DET本身是一个偏"工业视觉/缺陷检测"的小众数据集，很少�
 
         <rect x="836" y="304" width="178" height="60" rx="8" fill="#fff" stroke="#5b5fc7" stroke-width="1.2"/>
         <text x="925" y="326" text-anchor="middle" font-size="11" font-weight="600">定位分支 Reg</text>
-        <text x="925" y="344" text-anchor="middle" font-size="9.5" fill="#6b7280">Bounding Box (x,y,w,h)</text>
+        <text x="925" y="344" text-anchor="middle" font-size="9.5" fill="#6b7280">DFL 分布式框回归 (l,t,r,b)</text>
 
-        <rect x="836" y="380" width="178" height="46" rx="8" fill="#fff" stroke="#5b5fc7" stroke-width="1.2"/>
-        <text x="925" y="398" text-anchor="middle" font-size="11" font-weight="600">置信度分支 Obj</text>
-        <text x="925" y="414" text-anchor="middle" font-size="9.5" fill="#6b7280">Confidence Score</text>
-
-        <path d="M925 426 L925 448" stroke="#5b5fc7" stroke-width="1.4" marker-end="url(#arrow)"/>
+        <path d="M925 364 L925 448" stroke="#5b5fc7" stroke-width="1.4" marker-end="url(#arrow)"/>
         <rect x="836" y="452" width="178" height="46" rx="8" fill="#fff" stroke="#5b5fc7" stroke-width="1.2"/>
         <text x="925" y="470" text-anchor="middle" font-size="10.5" font-weight="600">NMS 非极大值抑制</text>
         <text x="925" y="484" text-anchor="middle" font-size="9" fill="#6b7280">筛选最终检测框</text>
@@ -300,7 +296,15 @@ NEU-DET本身是一个偏"工业视觉/缺陷检测"的小众数据集，很少�
   </div>
 
   <div class="footnote">
-    <b>读图说明：</b>灰色虚线大框内是 SAM2 的 Hiera 编码器，四个 Stage 依次降低分辨率、提升语义抽象层级，主体参数全程冻结不参与训练；每个 Stage 前挂一个橙色可插拔 Adapter（降维→GELU→升维→GELU 的轻量瓶颈结构），四个 Adapter 的开关组合就是论文里可以做消融实验的"分支增减"变量——开启的 Adapter 越多，特征适配能力越强、精度通常越高，但参数量和推理延迟也随之上升，可以画一条"开启 Stage 数 × mAP × FPS"的权衡曲线作为核心实验图。绿色 Neck 部分沿用 YOLO 常见的 PANet/BiFPN 双向融合结构，接收 C2–C5 四层特征；紫色 Head 部分是解耦检测头，分类、定位、置信度三条分支独立预测，最后经 NMS 输出六类缺陷（Crazing、Inclusion、Patches、Pitted_surface、Rolled-in_scale、Scratches）的检测框。
+    <b>读图说明：</b>灰色虚线大框内是 SAM2 的 Hiera 编码器，四个 Stage 依次降低分辨率、提升语义抽象层级，主体参数全程冻结不参与训练；每个 Stage 前挂一个橙色可插拔 Adapter（降维→GELU→升维→GELU 的轻量瓶颈结构），四个 Adapter 的开关组合就是论文里可以做消融实验的"分支增减"变量——开启的 Adapter 越多，特征适配能力越强、精度通常越高，但参数量和推理延迟也随之上升，可以画一条"开启 Stage 数 × mAP × FPS"的权衡曲线作为核心实验图。绿色 Neck 部分沿用 YOLO 常见的 PANet/BiFPN 双向融合结构，接收 C2–C5 四层特征；紫色 Head 部分是解耦检测头，**分类与定位两条分支**独立预测，正负样本由 Task-Aligned
+Assigner 动态分配，定位分支采用 DFL 分布式回归，最后经 NMS 输出六类缺陷（Crazing、
+Inclusion、Patches、Pitted_surface、Rolled-in_scale、Scratches）的检测框。
+
+这里没有独立的置信度（objectness）分支，是实验结论而非省略：TAL 的分类目标本身
+就是 IoU 加权的，再乘一个 IoU 形状的置信度等于把置信度折扣两次，代价主要由大目标
+承担——它们被检出但在排序中被压下去。在 NEU-DET 上的单变量对照中，去掉该分支使
+pitted_surface 的 AP50 从 0.384 升到 0.535。该分支在代码中以 `--use-obj` 保留，
+用于消融表。详见 `experiments.md`。
   </div>
 </div>
 </body>
