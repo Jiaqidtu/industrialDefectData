@@ -1,0 +1,194 @@
+{
+  "name": "gpu_smoke",
+  "cfg": {
+    "nc": 6,
+    "names": [
+      "crazing",
+      "inclusion",
+      "patches",
+      "pitted_surface",
+      "rolled-in_scale",
+      "scratches"
+    ],
+    "imgsz": 640,
+    "backbone": {
+      "variant": "tiny",
+      "adapter_stages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "adapter_ratio": 4,
+      "adapter_scale": 1.0,
+      "freeze_trunk": true,
+      "train_norm": false,
+      "checkpoint": "/zhome/9e/5/158608/sam2/checkpoints/sam2.1_hiera_tiny.pt"
+    },
+    "neck": {
+      "name": "panet",
+      "width": 192,
+      "depth": 1,
+      "use_sppf": true,
+      "use_c2": true,
+      "repeats": 2
+    },
+    "head": {
+      "reg_max": 16,
+      "use_obj": true,
+      "n_conv": 2
+    },
+    "loss": {
+      "box_w": 7.5,
+      "cls_w": 0.5,
+      "dfl_w": 1.5,
+      "obj_w": 1.0,
+      "topk": 10,
+      "iou_type": "ciou"
+    }
+  },
+  "args": {
+    "data": "neu-det-yolo",
+    "train_split": "train",
+    "val_split": "validation",
+    "cfg": null,
+    "variant": "tiny",
+    "adapter_stages": "1,2,3,4",
+    "adapter_ratio": 4,
+    "sam2_ckpt": "/zhome/9e/5/158608/sam2/checkpoints/sam2.1_hiera_tiny.pt",
+    "unfreeze_trunk": false,
+    "train_norm": false,
+    "neck": "panet",
+    "neck_width": 192,
+    "neck_depth": 1,
+    "iou_type": "ciou",
+    "epochs": 2,
+    "batch_size": 16,
+    "imgsz": 640,
+    "lr": 0.001,
+    "lrf": 0.01,
+    "adapter_lr_mult": 1.0,
+    "weight_decay": 0.0005,
+    "warmup_epochs": 3,
+    "ema": true,
+    "ema_decay": 0.999,
+    "amp": true,
+    "no_aug": false,
+    "eval_every": 1,
+    "conf": 0.001,
+    "iou": 0.65,
+    "verbose_eval": true,
+    "workers": 4,
+    "seed": 0,
+    "project": "runs",
+    "name": "gpu_smoke",
+    "device": "cuda"
+  },
+  "params": {
+    "trunk_frozen_M": 26.849,
+    "adapters_M": 0.104,
+    "neck_M": 2.626,
+    "head_M": 1.516,
+    "total_M": 31.095,
+    "trainable_M": 4.245,
+    "adapter_stages": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "efficiency": {
+    "trunk_frozen_M": 26.849,
+    "adapters_M": 0.104,
+    "neck_M": 2.626,
+    "head_M": 1.516,
+    "total_M": 31.095,
+    "trainable_M": 4.245,
+    "adapter_stages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "GFLOPs": 100.54,
+    "FPS": 84.3
+  },
+  "best": {
+    "epoch": 1,
+    "mAP50": 0.015673811965811964,
+    "mAP50-95": 0.005074004044703497,
+    "precision": 0.044444444444444446,
+    "recall": 0.005509641873278237,
+    "per_class": {
+      "crazing": {
+        "AP50": 0.0,
+        "AP50-95": 0.0,
+        "P": 0.0,
+        "R": 0.0,
+        "n_gt": 162
+      },
+      "inclusion": {
+        "AP50": 0.0,
+        "AP50-95": 0.0,
+        "P": 0.0,
+        "R": 0.0,
+        "n_gt": 159
+      },
+      "patches": {
+        "AP50": 0.0,
+        "AP50-95": 0.0,
+        "P": 0.0,
+        "R": 0.0,
+        "n_gt": 193
+      },
+      "pitted_surface": {
+        "AP50": 0.0,
+        "AP50-95": 0.0,
+        "P": 0.0,
+        "R": 0.0,
+        "n_gt": 87
+      },
+      "rolled-in_scale": {
+        "AP50": 0.0,
+        "AP50-95": 0.0,
+        "P": 0.0,
+        "R": 0.0,
+        "n_gt": 132
+      },
+      "scratches": {
+        "AP50": 0.09404287179487178,
+        "AP50-95": 0.03044402426822098,
+        "P": 0.26666666666666666,
+        "R": 0.03305785123966942,
+        "n_gt": 121
+      }
+    }
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "box": 0.44562685158517623,
+      "cls": 53.23354329003228,
+      "dfl": 2.2144233014848496,
+      "obj": 0.015271104913618829,
+      "total": 33.29587925804986,
+      "mAP50": 0.015673811965811964,
+      "mAP50-95": 0.005074004044703497,
+      "precision": 0.044444444444444446,
+      "recall": 0.005509641873278237
+    },
+    {
+      "epoch": 2,
+      "box": 0.41032134824328953,
+      "cls": 13.136963812510173,
+      "dfl": 1.5656024138132731,
+      "obj": 0.013262321903473802,
+      "total": 12.007557996114095,
+      "mAP50": 0.005546011396011394,
+      "mAP50-95": 0.0027862415797479346,
+      "precision": 0.037037037037037035,
+      "recall": 0.005509641873278237
+    }
+  ]
+}

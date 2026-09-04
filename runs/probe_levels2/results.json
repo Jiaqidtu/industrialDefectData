@@ -1,0 +1,243 @@
+{
+  "name": "probe_levels2",
+  "cfg": {
+    "nc": 6,
+    "names": [
+      "crazing",
+      "inclusion",
+      "patches",
+      "pitted_surface",
+      "rolled-in_scale",
+      "scratches"
+    ],
+    "imgsz": 640,
+    "backbone": {
+      "type": "cnn",
+      "width": 0.5,
+      "depth": 0.34,
+      "variant": "tiny",
+      "adapter_stages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "adapter_ratio": 4,
+      "adapter_scale": 1.0,
+      "adapter_type": "mlp",
+      "adapter_kernel": 3,
+      "freeze_trunk": true,
+      "train_norm": false,
+      "unfreeze_stages": [],
+      "checkpoint": null
+    },
+    "neck": {
+      "name": "panet",
+      "width": 192,
+      "depth": 1,
+      "use_sppf": true,
+      "use_c2": true,
+      "repeats": 2
+    },
+    "head": {
+      "reg_max": 16,
+      "use_obj": true,
+      "n_conv": 2
+    },
+    "loss": {
+      "box_w": 7.5,
+      "cls_w": 0.5,
+      "dfl_w": 1.5,
+      "obj_w": 1.0,
+      "topk": 10,
+      "iou_type": "ciou",
+      "size_aware_assign": false,
+      "size_tol": 1.5
+    },
+    "arch": "yolov8n.yaml"
+  },
+  "args": {
+    "data": "neu-det-yolo",
+    "train_split": "train",
+    "val_split": "validation",
+    "cfg": null,
+    "backbone": "cnn",
+    "ultra_arch": "yolov8n.yaml",
+    "cnn_width": 0.5,
+    "cnn_depth": 0.34,
+    "variant": "tiny",
+    "adapter_stages": "1,2,3,4",
+    "adapter_ratio": 4,
+    "adapter_type": "mlp",
+    "adapter_kernel": 3,
+    "unfreeze_stages": "",
+    "sam2_ckpt": null,
+    "unfreeze_trunk": false,
+    "train_norm": false,
+    "neck": "panet",
+    "neck_width": 192,
+    "neck_depth": 1,
+    "iou_type": "ciou",
+    "use_obj": true,
+    "reg_max": 16,
+    "size_aware_assign": false,
+    "size_tol": 1.5,
+    "epochs": 6,
+    "batch_size": 16,
+    "imgsz": 640,
+    "lr": 0.001,
+    "lrf": 0.01,
+    "adapter_lr_mult": 1.0,
+    "weight_decay": 0.0005,
+    "warmup_epochs": 3,
+    "ema": true,
+    "ema_decay": 0.999,
+    "amp": true,
+    "no_aug": true,
+    "mosaic": 0.0,
+    "scale": 0.5,
+    "translate": 0.1,
+    "affine_scale": 0.5,
+    "affine_translate": 0.1,
+    "hflip": 0.5,
+    "vflip": 0.3,
+    "rot90": 0.3,
+    "brightness": 0.3,
+    "close_mosaic": 10,
+    "eval_every": 6,
+    "conf": 0.001,
+    "iou": 0.7,
+    "verbose_eval": false,
+    "limit": 0,
+    "workers": 2,
+    "seed": 0,
+    "project": "runs",
+    "name": "probe_levels2",
+    "device": "cuda"
+  },
+  "params": {
+    "trunk_frozen_M": 4.423,
+    "adapters_M": 0.0,
+    "neck_M": 2.533,
+    "head_M": 1.516,
+    "total_M": 8.472,
+    "trainable_M": 8.472,
+    "adapter_stages": []
+  },
+  "efficiency": {
+    "trunk_frozen_M": 4.423,
+    "adapters_M": 0.0,
+    "neck_M": 2.533,
+    "head_M": 1.516,
+    "total_M": 8.472,
+    "trainable_M": 8.472,
+    "adapter_stages": [],
+    "GFLOPs": 34.067,
+    "FPS": 106.9
+  },
+  "best": {
+    "epoch": 6,
+    "mAP50": 0.1214346710673143,
+    "mAP50-95": 0.03454401833209176,
+    "precision": 0.20102091792043006,
+    "recall": 0.18618484467820037,
+    "per_class": {
+      "crazing": {
+        "AP50": 0.035201581010440935,
+        "AP50-95": 0.006725419032605895,
+        "P": 0.13114754098360656,
+        "R": 0.09876543209876543,
+        "n_gt": 162
+      },
+      "inclusion": {
+        "AP50": 0.23753506704056573,
+        "AP50-95": 0.07053224601570703,
+        "P": 0.35036496350364965,
+        "R": 0.3018867924528302,
+        "n_gt": 159
+      },
+      "patches": {
+        "AP50": 0.3297236505504171,
+        "AP50-95": 0.09694386229890513,
+        "P": 0.425414364640884,
+        "R": 0.39896373056994816,
+        "n_gt": 193
+      },
+      "pitted_surface": {
+        "AP50": 0.0,
+        "AP50-95": 0.0,
+        "P": 0.0,
+        "R": 0.0,
+        "n_gt": 87
+      },
+      "rolled-in_scale": {
+        "AP50": 0.07469398539371258,
+        "AP50-95": 0.020399985924007498,
+        "P": 0.1297071129707113,
+        "R": 0.23484848484848486,
+        "n_gt": 132
+      },
+      "scratches": {
+        "AP50": 0.051453742408749406,
+        "AP50-95": 0.012662596721325003,
+        "P": 0.1694915254237288,
+        "R": 0.08264462809917356,
+        "n_gt": 121
+      }
+    }
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "box": 0.4970069587230682,
+      "cls": 9.52632483376397,
+      "dfl": 2.6916233672036065,
+      "obj": 9.10113435321384,
+      "total": 21.629284116956924
+    },
+    {
+      "epoch": 2,
+      "box": 0.467828592326906,
+      "cls": 8.461212990019057,
+      "dfl": 2.2399692018826802,
+      "obj": 9.63179579840766,
+      "total": 20.73107058207194
+    },
+    {
+      "epoch": 3,
+      "box": 0.43736933834022945,
+      "cls": 7.315675687789917,
+      "dfl": 1.9414680004119873,
+      "obj": 9.221658648384942,
+      "total": 19.071968629625108
+    },
+    {
+      "epoch": 4,
+      "box": 0.4312299172083537,
+      "cls": 6.4374509652455645,
+      "dfl": 1.794533081849416,
+      "obj": 8.640151882171631,
+      "total": 17.78490136464437
+    },
+    {
+      "epoch": 5,
+      "box": 0.4222476243972778,
+      "cls": 5.795959705776639,
+      "dfl": 1.7219099548127916,
+      "obj": 7.89352560043335,
+      "total": 16.541227520836724
+    },
+    {
+      "epoch": 6,
+      "box": 0.40570965508619944,
+      "cls": 5.071463341183133,
+      "dfl": 1.6447030941645304,
+      "obj": 7.240069437026977,
+      "total": 15.28567811118232,
+      "mAP50": 0.1214346710673143,
+      "mAP50-95": 0.03454401833209176,
+      "precision": 0.20102091792043006,
+      "recall": 0.18618484467820037
+    }
+  ]
+}

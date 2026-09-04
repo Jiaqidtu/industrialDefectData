@@ -1,0 +1,34 @@
+# YOLO + SAM2(Hiera-Tiny) -- default configuration for NEU-DET.
+# The adapter_stages list is the "branch add/remove" ablation variable.
+nc: 6
+names: [crazing, inclusion, patches, pitted_surface, rolled-in_scale, scratches]
+imgsz: 640
+
+backbone:
+  variant: tiny            # ~27M frozen parameters
+  adapter_stages: [1, 2, 3, 4]
+  adapter_ratio: 4
+  adapter_scale: 1.0
+  freeze_trunk: true
+  train_norm: false
+  checkpoint: null         # e.g. /path/to/sam2.1_hiera_tiny.pt
+
+neck:
+  name: panet              # panet | bifpn | fpn
+  width: 192
+  depth: 1
+  use_sppf: true
+  use_c2: true             # fold the stride-4 C2 map into P3 (fine defects)
+
+head:
+  reg_max: 16
+  use_obj: true
+  n_conv: 2
+
+loss:
+  box_w: 7.5
+  cls_w: 0.5
+  dfl_w: 1.5
+  obj_w: 1.0
+  topk: 10
+  iou_type: ciou           # ciou | siou | iou

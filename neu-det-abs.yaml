@@ -1,0 +1,14 @@
+# NEU-DET for a reference implementation (ultralytics), absolute paths.
+# The shipped neu-det.yaml points at D:\... from the Windows preprocessing box.
+path: /zhome/9e/5/158608/industrialDefectData/neu-det-yolo
+train: train/images
+val: validation/images
+test: validation/images
+nc: 6
+names:
+  0: crazing
+  1: inclusion
+  2: patches
+  3: pitted_surface
+  4: rolled-in_scale
+  5: scratches

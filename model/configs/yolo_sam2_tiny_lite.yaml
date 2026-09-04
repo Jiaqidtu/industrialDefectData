@@ -1,0 +1,26 @@
+# Lightweight point of the trade-off curve: adapters only on the deep stages,
+# narrow neck, no stride-4 branch. Fastest configuration of the ablation.
+nc: 6
+names: [crazing, inclusion, patches, pitted_surface, rolled-in_scale, scratches]
+imgsz: 640
+
+backbone:
+  variant: tiny
+  adapter_stages: [3, 4]
+  adapter_ratio: 8
+  freeze_trunk: true
+  checkpoint: null
+
+neck:
+  name: fpn
+  width: 128
+  depth: 1
+  use_sppf: true
+  use_c2: false
+
+head:
+  reg_max: 8
+  use_obj: true
+  n_conv: 1
+
+loss: {box_w: 7.5, cls_w: 0.5, dfl_w: 1.5, obj_w: 1.0, topk: 10, iou_type: ciou}

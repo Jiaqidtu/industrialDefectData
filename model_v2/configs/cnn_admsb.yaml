@@ -1,0 +1,34 @@
+# CNN backbone WITH ADMSB in the P3/P4 C2f blocks.
+# Paired with cnn_base.yaml: the ONLY
+# difference between the two files is backbone.use_admsb, so any metric gap is
+# attributable to ADMSB alone.
+nc: 6
+names: [crazing, inclusion, patches, pitted_surface, rolled-in_scale, scratches]
+imgsz: 640
+
+backbone:
+  type: cnn
+  width: 0.5
+  depth: 0.34
+  use_admsb: true
+  n_admsb: 2
+
+neck:
+  name: panet
+  width: 192
+  depth: 1
+  use_sppf: true
+  use_c2: true
+
+head:
+  reg_max: 16
+  use_obj: true
+  n_conv: 2
+
+loss:
+  box_w: 7.5
+  cls_w: 0.5
+  dfl_w: 1.5
+  obj_w: 1.0
+  topk: 10
+  iou_type: ciou

@@ -1,0 +1,229 @@
+{
+  "name": "v2_gpu_smoke",
+  "complete": true,
+  "epochs_done": 2,
+  "cfg": {
+    "nc": 6,
+    "names": [
+      "crazing",
+      "inclusion",
+      "patches",
+      "pitted_surface",
+      "rolled-in_scale",
+      "scratches"
+    ],
+    "imgsz": 640,
+    "backbone": {
+      "type": "hiera",
+      "width": 0.5,
+      "depth": 0.34,
+      "variant": "tiny",
+      "adapter_stages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "adapter_ratio": 4,
+      "adapter_scale": 1.0,
+      "adapter_type": "mlp",
+      "adapter_kernel": 3,
+      "freeze_trunk": true,
+      "train_norm": false,
+      "unfreeze_stages": [],
+      "checkpoint": "/zhome/9e/5/158608/sam2/checkpoints/sam2.1_hiera_tiny.pt"
+    },
+    "neck": {
+      "name": "panet",
+      "width": 192,
+      "depth": 1,
+      "use_sppf": true,
+      "use_c2": true,
+      "repeats": 2
+    },
+    "head": {
+      "reg_max": 16,
+      "use_obj": false,
+      "n_conv": 2
+    },
+    "loss": {
+      "box_w": 7.5,
+      "cls_w": 0.5,
+      "dfl_w": 1.5,
+      "obj_w": 1.0,
+      "topk": 10,
+      "iou_type": "ciou",
+      "size_aware_assign": false,
+      "size_tol": 1.5
+    },
+    "arch": "yolov8n.yaml"
+  },
+  "args": {
+    "data": "neu-det-yolo",
+    "train_split": "train",
+    "val_split": "validation",
+    "cfg": null,
+    "backbone": "hiera",
+    "ultra_arch": "yolov8n.yaml",
+    "cnn_width": 0.5,
+    "cnn_depth": 0.34,
+    "variant": "tiny",
+    "adapter_stages": "1,2,3,4",
+    "adapter_ratio": 4,
+    "adapter_type": "mlp",
+    "adapter_kernel": 3,
+    "unfreeze_stages": "",
+    "sam2_ckpt": "/zhome/9e/5/158608/sam2/checkpoints/sam2.1_hiera_tiny.pt",
+    "unfreeze_trunk": false,
+    "train_norm": false,
+    "neck": "panet",
+    "neck_width": 192,
+    "neck_depth": 1,
+    "iou_type": "ciou",
+    "use_obj": false,
+    "reg_max": 16,
+    "size_aware_assign": false,
+    "size_tol": 1.5,
+    "epochs": 2,
+    "batch_size": 16,
+    "imgsz": 640,
+    "lr": 0.001,
+    "lrf": 0.01,
+    "adapter_lr_mult": 1.0,
+    "weight_decay": 0.0005,
+    "warmup_epochs": 3,
+    "ema": true,
+    "ema_decay": 0.999,
+    "amp": true,
+    "no_aug": false,
+    "mosaic": 0.0,
+    "scale": 0.5,
+    "translate": 0.1,
+    "min_box_visibility": 0.1,
+    "affine_scale": 0.5,
+    "affine_translate": 0.1,
+    "hflip": 0.5,
+    "vflip": 0.3,
+    "rot90": 0.3,
+    "brightness": 0.3,
+    "close_mosaic": 10,
+    "eval_every": 1,
+    "conf": 0.001,
+    "iou": 0.45,
+    "verbose_eval": true,
+    "resume": false,
+    "limit": 0,
+    "workers": 4,
+    "seed": 0,
+    "project": "runs",
+    "name": "v2_gpu_smoke",
+    "device": "cuda"
+  },
+  "params": {
+    "trunk_frozen_M": 26.849,
+    "adapters_M": 0.104,
+    "neck_M": 2.626,
+    "head_M": 1.516,
+    "total_M": 31.095,
+    "trainable_M": 4.245,
+    "adapter_stages": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "best": {
+    "epoch": 2,
+    "mAP50": 0.4178182725076784,
+    "mAP50-95": 0.13003975623463007,
+    "precision": 0.49857830057496827,
+    "recall": 0.4460617245143607,
+    "per_class": {
+      "crazing": {
+        "AP50": 0.24316336174863798,
+        "AP50-95": 0.05938564801643033,
+        "P": 0.29535864978902954,
+        "R": 0.43209876543209874,
+        "n_gt": 162
+      },
+      "inclusion": {
+        "AP50": 0.41508784392063497,
+        "AP50-95": 0.11190143444605712,
+        "P": 0.5486725663716814,
+        "R": 0.389937106918239,
+        "n_gt": 159
+      },
+      "patches": {
+        "AP50": 0.6503858633453008,
+        "AP50-95": 0.2029561172396936,
+        "P": 0.6722222222222223,
+        "R": 0.6269430051813472,
+        "n_gt": 193
+      },
+      "pitted_surface": {
+        "AP50": 0.642786485097617,
+        "AP50-95": 0.2766103757684545,
+        "P": 0.75,
+        "R": 0.5862068965517241,
+        "n_gt": 87
+      },
+      "rolled-in_scale": {
+        "AP50": 0.11552274324102489,
+        "AP50-95": 0.02299609831971016,
+        "P": 0.17682926829268292,
+        "R": 0.2196969696969697,
+        "n_gt": 132
+      },
+      "scratches": {
+        "AP50": 0.43996333769285445,
+        "AP50-95": 0.10638886361743463,
+        "P": 0.5483870967741935,
+        "R": 0.4214876033057851,
+        "n_gt": 121
+      }
+    }
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "box": 0.3945295400089688,
+      "cls": 8.202168114980061,
+      "dfl": 2.399327907297346,
+      "obj": 0.0,
+      "total": 10.659047497643364,
+      "mAP50": 0.1564494556135212,
+      "mAP50-95": 0.043645162804545154,
+      "precision": 0.2299098235464764,
+      "recall": 0.34108260948498464
+    },
+    {
+      "epoch": 2,
+      "box": 0.318727703889211,
+      "cls": 6.552894390953911,
+      "dfl": 1.9113324191835193,
+      "obj": 0.0,
+      "total": 8.533903630574544,
+      "mAP50": 0.4178182725076784,
+      "mAP50-95": 0.13003975623463007,
+      "precision": 0.49857830057496827,
+      "recall": 0.4460617245143607
+    }
+  ],
+  "efficiency": {
+    "trunk_frozen_M": 26.849,
+    "adapters_M": 0.104,
+    "neck_M": 2.626,
+    "head_M": 1.516,
+    "total_M": 31.095,
+    "trainable_M": 4.245,
+    "adapter_stages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "GFLOPs": 100.538,
+    "FPS": 77.51
+  }
+}
