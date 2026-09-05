@@ -1,6 +1,6 @@
 task: detect
 mode: train
-model: yolov8n.pt
+model: yolov8s.pt
 data: neu-det-3way/neu-det-3way.yaml
 epochs: 150
 time: null
@@ -13,13 +13,13 @@ cache: false
 device: '0'
 workers: 2
 project: /zhome/9e/5/158608/industrialDefectData/runs
-name: f3_v8n_s1
+name: f3_v8s_s2
 exist_ok: true
 pretrained: true
 cls_remap: true
 optimizer: auto
 verbose: true
-seed: 1
+seed: 2
 deterministic: true
 single_cls: false
 rect: false
@@ -113,4 +113,4 @@ auto_augment: randaugment
 erasing: 0.4
 cfg: null
 tracker: tracktrack.yaml
-save_dir: /zhome/9e/5/158608/industrialDefectData/runs/f3_v8n_s1
+save_dir: /zhome/9e/5/158608/industrialDefectData/runs/f3_v8s_s2

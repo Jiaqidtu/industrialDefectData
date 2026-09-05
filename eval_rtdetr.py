@@ -15,7 +15,7 @@ ap.add_argument("--split", default="test")
 ap.add_argument("--imgsz", type=int, default=640)
 a = ap.parse_args()
 
-from ultralytics import RTDETR
+from ultralytics import RTDETR, YOLO
 sd = torch.load(a.weights, map_location="cpu", weights_only=False)
 bad = [n for n, p in sd["model"].state_dict().items() if not torch.isfinite(p).all()]
 print(f"[check] {len(bad)} non-finite tensors in {a.weights}")
@@ -23,7 +23,9 @@ if bad:
     print("        first few:", bad[:5])
     sys.exit(f"{a.weights} 已被 NaN 污染，不能用于评分")
 
-m = RTDETR(a.weights)
+name = os.path.basename(str(sd["model"].yaml.get("yaml_file", "")) or a.weights)
+is_rtdetr = "rtdetr" in name.lower() or "rtdetr" in a.weights.lower()
+m = (RTDETR if is_rtdetr else YOLO)(a.weights)
 r = m.val(data=a.data, split=a.split, imgsz=a.imgsz, batch=16, workers=2,
           device=0, plots=False, project="runs", name=f"eval_{a.split}",
           exist_ok=True)
@@ -38,6 +40,6 @@ for i, c in enumerate(r.box.ap_class_index):
     print(f"{n:<18}{r.box.ap50[i]:>9.4f}{r.box.ap[i]:>10.4f}")
 print(f"{'all':<18}{r.box.map50:>9.4f}{r.box.map:>10.4f}")
 dst = os.path.join(os.path.dirname(os.path.dirname(a.weights)),
-                   f"{a.split}_rtdetr.json")
+                   f"{a.split}_ultra.json")
 json.dump(out, open(dst, "w"), indent=1)
 print("->", dst)

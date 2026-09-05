@@ -1,0 +1,16 @@
+#BSUB -J rtdetr32_eval
+#BSUB -q gpul40s
+#BSUB -n 4
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=16GB]"
+#BSUB -M 16GB
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -W 1:00
+#BSUB -o /zhome/9e/5/158608/industrialDefectData/runs/rtdetr32_eval.out
+#BSUB -e /zhome/9e/5/158608/industrialDefectData/runs/rtdetr32_eval.err
+source ~/miniconda3/bin/activate
+conda activate defect
+cd /zhome/9e/5/158608/industrialDefectData
+for s in 0 1 2; do
+  python eval_rtdetr.py --weights runs/f3_rtdetr32_s$s/weights/best.pt --split test
+done
